@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KuliOnline - Platform Jasa Kuli Bangunan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #f97316;
+            --dark-color: #1e293b;
+            --light-color: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #1e293b;
+            color: #f1f5f9;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+            color: white;
+            padding: 80px 0;
+            margin-top: 56px;
+        }
+
+        .feature-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            border-radius: 15px;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .kuli-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            height: 100%;
+        }
+
+        .kuli-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .kuli-avatar {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .rating-stars {
+            color: #fbbf24;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 30px;
+        }
+
+        .btn-primary:hover {
+            background-color: #1e40af;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 30px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ea580c;
+        }
+
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 70%;
+        }
+
+        .chat-message.sent {
+            background-color: var(--primary-color);
+            color: white;
+            margin-left: auto;
+        }
+
+        .chat-message.received {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .badge-skill {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 2px;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .dark-mode .card {
+            background-color: #334155;
+            color: #f1f5f9;
+        }
+
+        .dark-mode .form-control,
+        .dark-mode .form-select {
+            background-color: #475569;
+            color: #f1f5f9;
+            border-color: #64748b;
+        }
+
+        .dark-mode .modal-content {
+            background-color: #334155;
+            color: #f1f5f9;
+        }
+
+        .dark-mode .chat-message.received {
+            background-color: #475569;
+            color: #f1f5f9;
+        }
+
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="showPage('home')">
+                <i class="bi bi-hammer"></i> KuliOnline
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto" id="mainMenu">
+                    <!-- Menu akan di-generate oleh JavaScript -->
+                </ul>
+                <button class="btn btn-outline-light ms-3" onclick="toggleDarkMode()">
+                    <i class="bi bi-moon-stars" id="darkModeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div id="appContent">
+        <!-- Content akan di-generate oleh JavaScript -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5><i class="bi bi-hammer"></i> KuliOnline</h5>
+                    <p>Platform digital terpercaya untuk jasa kuli bangunan</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h6>Kontak</h6>
+                    <p><i class="bi bi-envelope"></i> info@kulionline.com</p>
+                    <p><i class="bi bi-phone"></i> 0812-3456-7890</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h6>Ikuti Kami</h6>
+                    <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+            <hr class="bg-white">
+            <p class="text-center mb-0">&copy; 2025 KuliOnline. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal Chat -->
+    <div class="modal fade" id="chatModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chat dengan <span id="chatKuliName"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-container" id="chatContainer"></div>
+                    <div class="input-group mt-3">
+                        <input type="text" class="form-control" id="chatInput" placeholder="Ketik pesan...">
+                        <button class="btn btn-primary" onclick="sendMessage()">
+                            <i class="bi bi-send"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ==================== DATA MANAGEMENT ====================
+        
+        class AppData {
+            static init() {
+                if (!localStorage.getItem('users')) {
+                    localStorage.setItem('users', JSON.stringify([]));
+                }
+                if (!localStorage.getItem('kulis')) {
+                    localStorage.setItem('kulis', JSON.stringify(this.getDefaultKulis()));
+                }
+                if (!localStorage.getItem('orders')) {
+                    localStorage.setItem('orders', JSON.stringify([]));
+                }
+                if (!localStorage.getItem('chats')) {
+                    localStorage.setItem('chats', JSON.stringify([]));
+                }
+                if (!localStorage.getItem('notifications')) {
+                    localStorage.setItem('notifications', JSON.stringify([]));
+                }
+            }
+
+            static getDefaultKulis() {
+                return [
+                    {
+                        id: 1,
+                        name: 'Budi Santoso',
+                        email: 'budi@kuli.com',
+                        password: this.hashPassword('kuli123'),
+                        phone: '081234567890',
+                        photo: 'https://i.pravatar.cc/300?img=12',
+                        skills: ['Tukang Batu', 'Tukang Bangunan'],
+                        experience: '5 tahun',
+                        rate: 150000,
+                        rateType: 'harian',
+                        area: 'Jakarta Selatan',
+                        availability: true,
+                        rating: 4.8,
+                        reviews: 45,
+                        description: 'Berpengalaman dalam renovasi rumah dan pembangunan gedung',
+                        isKuli: true
+                    },
+                    {
+                        id: 2,
+                        name: 'Ahmad Riyadi',
+                        email: 'ahmad@kuli.com',
+                        password: this.hashPassword('kuli123'),
+                        phone: '081234567891',
+                        photo: 'https://i.pravatar.cc/300?img=13',
+                        skills: ['Tukang Cat', 'Tukang Bangunan'],
+                        experience: '3 tahun',
+                        rate: 120000,
+                        rateType: 'harian',
+                        area: 'Jakarta Barat',
+                        availability: true,
+                        rating: 4.5,
+                        reviews: 32,
+                        description: 'Ahli dalam pengecatan dan finishing bangunan',
+                        isKuli: true
+                    },
+                    {
+                        id: 3,
+                        name: 'Slamet Wahyudi',
+                        email: 'slamet@kuli.com',
+                        password: this.hashPassword('kuli123'),
+                        phone: '081234567892',
+                        photo: 'https://i.pravatar.cc/300?img=14',
+                        skills: ['Tukang Kayu', 'Tukang Listrik'],
+                        experience: '7 tahun',
+                        rate: 180000,
+                        rateType: 'harian',
+                        area: 'Jakarta Timur',
+                        availability: true,
+                        rating: 4.9,
+                        reviews: 67,
+                        description: 'Spesialis pekerjaan kayu dan instalasi listrik',
+                        isKuli: true
+                    }
+                ];
+            }
+
+            static hashPassword(password) {
+                // Simple hash untuk demo (gunakan bcrypt di production)
+                return btoa(password);
+            }
+
+            static verifyPassword(password, hash) {
+                return btoa(password) === hash;
+            }
+
+            static getUsers() {
+                return JSON.parse(localStorage.getItem('users') || '[]');
+            }
+
+            static saveUser(user) {
+                const users = this.getUsers();
+                users.push(user);
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            static getKulis() {
+                return JSON.parse(localStorage.getItem('kulis') || '[]');
+            }
+
+            static saveKuli(kuli) {
+                const kulis = this.getKulis();
+                kulis.push(kuli);
+                localStorage.setItem('kulis', JSON.stringify(kulis));
+            }
+
+            static updateKuli(kuliId, updates) {
+                const kulis = this.getKulis();
+                const index = kulis.findIndex(k => k.id === kuliId);
+                if (index !== -1) {
+                    kulis[index] = { ...kulis[index], ...updates };
+                    localStorage.setItem('kulis', JSON.stringify(kulis));
+                }
+            }
+
+            static getOrders() {
+                return JSON.parse(localStorage.getItem('orders') || '[]');
+            }
+
+            static saveOrder(order) {
+                const orders = this.getOrders();
+                orders.push(order);
+                localStorage.setItem('orders', JSON.stringify(orders));
+                
+                // Add notification for kuli
+                this.addNotification(order.kuliId, `Pesanan baru dari ${order.customerName}`);
+            }
+
+            static updateOrder(orderId, updates) {
+                const orders = this.getOrders();
+                const index = orders.findIndex(o => o.id === orderId);
+                if (index !== -1) {
+                    orders[index] = { ...orders[index], ...updates };
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                }
+            }
+
+            static getChats() {
+                return JSON.parse(localStorage.getItem('chats') || '[]');
+            }
+
+            static saveChat(chat) {
+                const chats = this.getChats();
+                chats.push(chat);
+                localStorage.setItem('chats', JSON.stringify(chats));
+            }
+
+            static addNotification(userId, message) {
+                const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+                notifications.push({
+                    id: Date.now(),
+                    userId: userId,
+                    message: message,
+                    timestamp: new Date().toISOString(),
+                    read: false
+                });
+                localStorage.setItem('notifications', JSON.stringify(notifications));
+            }
+
+            static getNotifications(userId) {
+                const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+                return notifications.filter(n => n.userId === userId);
+            }
+        }
+
+        // ==================== AUTH MANAGEMENT ====================
+        
+        class AuthManager {
+            static currentUser = null;
+
+            static init() {
+                const session = localStorage.getItem('session');
+                if (session) {
+                    this.currentUser = JSON.parse(session);
+                    return true;
+                }
+                return false;
+            }
+
+            static login(email, password, remember) {
+                const users = AppData.getUsers();
+                const kulis = AppData.getKulis();
+                
+                // Check in regular users
+                let user = users.find(u => u.email === email);
+                
+                // Check in kulis
+                if (!user) {
+                    user = kulis.find(k => k.email === email);
+                }
+
+                if (user && AppData.verifyPassword(password, user.password)) {
+                    this.currentUser = user;
+                    if (remember) {
+                        localStorage.setItem('session', JSON.stringify(user));
+                    } else {
+                        sessionStorage.setItem('session', JSON.stringify(user));
+                    }
+                    return true;
+                }
+                return false;
+            }
+
+            static register(userData) {
+                const users = AppData.getUsers();
+                const kulis = AppData.getKulis();
+                
+                // Check if email already exists
+                if (users.find(u => u.email === userData.email) || 
+                    kulis.find(k => k.email === userData.email)) {
+                    return false;
+                }
+
+                const newUser = {
+                    id: Date.now(),
+                    ...userData,
+                    password: AppData.hashPassword(userData.password),
+                    createdAt: new Date().toISOString()
+                };
+
+                if (userData.isKuli) {
+                    AppData.saveKuli(newUser);
+                } else {
+                    AppData.saveUser(newUser);
+                }
+
+                return true;
+            }
+
+            static logout() {
+                this.currentUser = null;
+                localStorage.removeItem('session');
+                sessionStorage.removeItem('session');
+            }
+
+            static isLoggedIn() {
+                return this.currentUser !== null;
+            }
+
+            static resetPassword(email) {
+                // Simplified reset - in production, send email
+                const users = AppData.getUsers();
+                const kulis = AppData.getKulis();
+                
+                let user = users.find(u => u.email === email);
+                if (!user) {
+                    user = kulis.find(k => k.email === email);
+                }
+
+                if (user) {
+                    alert(`Link reset password telah dikirim ke ${email}\n(Demo: Password baru adalah "newpass123")`);
+                    // Update password
+                    user.password = AppData.hashPassword('newpass123');
+                    if (user.isKuli) {
+                        AppData.updateKuli(user.id, { password: user.password });
+                    }
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        // ==================== UI CONTROLLER ====================
+        
+        class UIController {
+            static init() {
+                AppData.init();
+                AuthManager.init();
+                this.updateUI();
+                this.updateNotificationBadge();
+            }
+
+            static updateUI() {
+                this.renderMenu();
+                if (AuthManager.isLoggedIn()) {
+                    this.showPage('home');
+                } else {
+                    this.showPage('login');
+                }
+            }
+
+            static renderMenu() {
+                const menu = document.getElementById('mainMenu');
+                
+                if (AuthManager.isLoggedIn()) {
+                    const user = AuthManager.currentUser;
+                    if (user.isKuli) {
+                        menu.innerHTML = `
+                            <li class="nav-item"><a class="nav-link" href="#" onclick="UIController.showPage('home')">Beranda</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#" onclick="UIController.showPage('dashboard-kuli')">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#" onclick="UIController.showPage('profile-kuli')">Profil</a></li>
+                            <li class="nav-item position-relative">
+                                <a class="nav-link" href="#" onclick="UIController.showPage('notifications')">
+                                    <i class="bi bi-bell"></i>
+                                    <span class="notification-badge" id="notifBadge" style="display:none;">0</span>
+                                </a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#" onclick="AuthManager.logout(); UIController.updateUI();">Logout</a></li>
+                        `;
+                    } else {
+                        menu.innerHTML = `
+                            <li class="nav-item"><a class="nav-link" href="#" onclick="UIController.showPage('home')">Beranda</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#" onclick="UIController.showPage('cari-kuli')">Cari Kuli</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#" onclick="UIController.showPage('riwayat')">Riwayat</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#" onclick="UIController.showPage('profile')">Akun</a></li>
+                            <li class="nav-item position-relative">
+                                <a class="nav-link" href="#" onclick="UIController.showPage('notifications')">
+                                    <i class="bi bi-bell"></i>
+                                    <span class="notification-badge" id="notifBadge" style="display:none;">0</span>
+                                </a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#" onclick="AuthManager.logout(); UIController.updateUI();">Logout</a></li>
+                        `;
+                    }
+                } else {
+                    menu.innerHTML = `
+                        <li class="nav-item"><a class="nav-link" href="#" onclick="UIController.showPage('login')">Login</a></li>
+                        <li class="nav-item"><a class="nav-link btn btn-light text-primary ms-2" href="#" onclick="UIController.showPage('register')">Daftar</a></li>
+                    `;
+                }
+            }
+
+            static updateNotificationBadge() {
+                if (AuthManager.isLoggedIn()) {
+                    const notifications = AppData.getNotifications(AuthManager.currentUser.id);
+                    const unread = notifications.filter(n => !n.read).length;
+                    const badge = document.getElementById('notifBadge');
+                    if (badge) {
+                        if (unread > 0) {
+                            badge.textContent = unread;
+                            badge.style.display = 'flex';
+                        } else {
+                            badge.style.display = 'none';
+                        }
+                    }
+                }
+            }
+
+            static showPage(page) {
+                const content = document.getElementById('appContent');
+                
+                switch(page) {
+                    case 'login':
+                        content.innerHTML = this.getLoginPage();
+                        break;
+                    case 'register':
+                        content.innerHTML = this.getRegisterPage();
+                        break;
+                    case 'forgot-password':
+                        content.innerHTML = this.getForgotPasswordPage();
+                        break;
+                    case 'home':
+                        content.innerHTML = this.getHomePage();
+                        break;
+                    case 'cari-kuli':
+                        content.innerHTML = this.getCariKuliPage();
+                        break;
+                    case 'daftar-kuli':
+                        content.innerHTML = this.getDaftarKuliPage();
+                        break;
+                    case 'profile':
+                        content.innerHTML = this.getProfilePage();
+                        break;
+                    case 'profile-kuli':
+                        content.innerHTML = this.getProfileKuliPage();
+                        break;
+                    case 'dashboard-kuli':
+                        content.innerHTML = this.getDashboardKuliPage();
+                        break;
+                    case 'riwayat':
+                        content.innerHTML = this.getRiwayatPage();
+                        break;
+                    case 'notifications':
+                        content.innerHTML = this.getNotificationsPage();
+                        break;
+                    default:
+                        content.innerHTML = this.getHomePage();
+                }
+            }
+
+            // ========== PAGE TEMPLATES ==========
+
+            static getLoginPage() {
+                return `
+                    <div class="container" style="margin-top: 100px;">
+                        <div class="row justify-content-center">
+                            <div class="col-md-5">
+                                <div class="card shadow-lg border-0">
+                                    <div class="card-body p-5">
+                                        <h3 class="text-center mb-4"><i class="bi bi-box-arrow-in-right"></i> Login</h3>
+                                        <form onsubmit="handleLogin(event)">
+                                            <div class="mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="loginEmail" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Password</label>
+                                                <input type="password" class="form-control" id="loginPassword" required>
+                                            </div>
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" class="form-check-input" id="rememberMe">
+                                                <label class="form-check-label" for="rememberMe">Ingat Saya</label>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+                                            <div class="text-center">
+                                                <a href="#" onclick="UIController.showPage('forgot-password')">Lupa Password?</a>
+                                            </div>
+                                            <hr>
+                                            <p class="text-center mb-0">Belum punya akun? 
+                                                <a href="#" onclick="UIController.showPage('register')">Daftar Sekarang</a>
+                                            </p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static getRegisterPage() {
+                return `
+                    <div class="container" style="margin-top: 100px;">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <div class="card shadow-lg border-0">
+                                    <div class="card-body p-5">
+                                        <h3 class="text-center mb-4"><i class="bi bi-person-plus"></i> Daftar Akun</h3>
+                                        <form onsubmit="handleRegister(event)">
+                                            <div class="mb-3">
+                                                <label class="form-label">Nama Lengkap</label>
+                                                <input type="text" class="form-control" id="regName" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="regEmail" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Nomor WhatsApp</label>
+                                                <input type="tel" class="form-control" id="regPhone" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Password (minimal 6 karakter)</label>
+                                                <input type="password" class="form-control" id="regPassword" minlength="6" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Konfirmasi Password</label>
+                                                <input type="password" class="form-control" id="regPasswordConfirm" minlength="6" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Daftar Sebagai</label>
+                                                <select class="form-select" id="regType" onchange="toggleKuliFields()">
+                                                    <option value="customer">Pelanggan</option>
+                                                    <option value="kuli">Mitra Kuli</option>
+                                                </select>
+                                            </div>
+                                            <div id="kuliFields" style="display:none;">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Keahlian (pisahkan dengan koma)</label>
+                                                    <input type="text" class="form-control" id="regSkills" placeholder="Tukang Batu, Tukang Cat">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Pengalaman</label>
+                                                    <input type="text" class="form-control" id="regExperience" placeholder="5 tahun">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tarif (Rp)</label>
+                                                    <input type="number" class="form-control" id="regRate" placeholder="150000">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tipe Tarif</label>
+                                                    <select class="form-select" id="regRateType">
+                                                        <option value="harian">Harian</option>
+                                                        <option value="borongan">Borongan</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Area Kerja</label>
+                                                    <input type="text" class="form-control" id="regArea" placeholder="Jakarta Selatan">
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100 mb-3">Daftar</button>
+                                            <p class="text-center mb-0">Sudah punya akun? 
+                                                <a href="#" onclick="UIController.showPage('login')">Login</a>
+                                            </p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static getForgotPasswordPage() {
+                return `
+                    <div class="container" style="margin-top: 100px;">
+                        <div class="row justify-content-center">
+                            <div class="col-md-5">
+                                <div class="card shadow-lg border-0">
+                                    <div class="card-body p-5">
+                                        <h3 class="text-center mb-4"><i class="bi bi-key"></i> Lupa Password</h3>
+                                        <p class="text-center text-muted mb-4">Masukkan email Anda untuk reset password</p>
+                                        <form onsubmit="handleForgotPassword(event)">
+                                            <div class="mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="forgotEmail" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100 mb-3">Kirim Link Reset</button>
+                                            <div class="text-center">
+                                                <a href="#" onclick="UIController.showPage('login')">Kembali ke Login</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static getHomePage() {
+                if (!AuthManager.isLoggedIn()) {
+                    return this.getLoginPage();
+                }
+
+                const user = AuthManager.currentUser;
+                const kulis = AppData.getKulis().slice(0, 3);
+
+                return `
+                    <!-- Hero Section -->
+                    <div class="hero-section text-center">
+                        <div class="container">
+                            <h1 class="display-4 fw-bold mb-3">Selamat Datang, ${user.name}!</h1>
+                            <p class="lead mb-4">Platform jasa kuli bangunan terpercaya dan profesional</p>
+                            ${!user.isKuli ? `
+                                <button class="btn btn-light btn-lg me-2" onclick="UIController.showPage('cari-kuli')">
+                                    <i class="bi bi-search"></i> Cari Kuli
+                                </button>
+                                <button class="btn btn-secondary btn-lg" onclick="UIController.showPage('daftar-kuli')">
+                                    <i class="bi bi-person-plus"></i> Daftar Jadi Kuli
+                                </button>
+                            ` : `
+                                <button class="btn btn-light btn-lg" onclick="UIController.showPage('dashboard-kuli')">
+                                    <i class="bi bi-speedometer2"></i> Dashboard Kuli
+                                </button>
+                            `}
+                        </div>
+                    </div>
+
+                    <!-- Features Section -->
+                    <div class="container my-5">
+                        <h2 class="text-center mb-5">Kenapa KuliOnline?</h2>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="card feature-card shadow">
+                                    <div class="card-body text-center p-4">
+                                        <i class="bi bi-lightning-charge text-primary" style="font-size: 3rem;"></i>
+                                        <h5 class="mt-3">Cepat & Mudah</h5>
+                                        <p class="text-muted">Pesan jasa kuli hanya dalam beberapa klik</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card feature-card shadow">
+                                    <div class="card-body text-center p-4">
+                                        <i class="bi bi-shield-check text-success" style="font-size: 3rem;"></i>
+                                        <h5 class="mt-3">Aman & Terpercaya</h5>
+                                        <p class="text-muted">Semua kuli terverifikasi dan profesional</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card feature-card shadow">
+                                    <div class="card-body text-center p-4">
+                                        <i class="bi bi-cash-coin text-warning" style="font-size: 3rem;"></i>
+                                        <h5 class="mt-3">Harga Transparan</h5>
+                                        <p class="text-muted">Tarif jelas tanpa biaya tersembunyi</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kuli Terbaik Section -->
+                    <div class="container my-5">
+                        <h2 class="text-center mb-5">Kuli Terbaik Kami</h2>
+                        <div class="row g-4">
+                            ${kulis.map(kuli => `
+                                <div class="col-md-4">
+                                    <div class="card kuli-card shadow">
+                                        <img src="${kuli.photo}" class="kuli-avatar" alt="${kuli.name}">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${kuli.name}</h5>
+                                            <p class="text-muted mb-2">
+                                                <i class="bi bi-geo-alt"></i> ${kuli.area}
+                                            </p>
+                                            <div class="mb-2">
+                                                ${kuli.skills.map(skill => `<span class="badge-skill">${skill}</span>`).join('')}
+                                            </div>
+                                            <div class="rating-stars mb-2">
+                                                ${this.renderStars(kuli.rating)}
+                                                <span class="text-muted ms-1">(${kuli.reviews})</span>
+                                            </div>
+                                            <p class="fw-bold text-primary mb-3">Rp ${kuli.rate.toLocaleString('id-ID')}/${kuli.rateType}</p>
+                                            ${!user.isKuli ? `
+                                                <button class="btn btn-primary w-100" onclick="showKuliDetail(${kuli.id})">
+                                                    Lihat Detail
+                                                </button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            static getCariKuliPage() {
+                const kulis = AppData.getKulis();
+                
+                return `
+                    <div class="container" style="margin-top: 100px;">
+                        <h2 class="mb-4"><i class="bi bi-search"></i> Cari Kuli</h2>
+                        
+                        <!-- Filter Section -->
+                        <div class="card shadow mb-4">
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" id="searchName" placeholder="Nama kuli..." onkeyup="filterKulis()">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-select" id="searchArea" onchange="filterKulis()">
+                                            <option value="">Semua Area</option>
+                                            <option value="Jakarta Selatan">Jakarta Selatan</option>
+                                            <option value="Jakarta Barat">Jakarta Barat</option>
+                                            <option value="Jakarta Timur">Jakarta Timur</option>
+                                            <option value="Jakarta Utara">Jakarta Utara</option>
+                                            <option value="Jakarta Pusat">Jakarta Pusat</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-select" id="searchSkill" onchange="filterKulis()">
+                                            <option value="">Semua Keahlian</option>
+                                            <option value="Tukang Batu">Tukang Batu</option>
+                                            <option value="Tukang Cat">Tukang Cat</option>
+                                            <option value="Tukang Kayu">Tukang Kayu</option>
+                                            <option value="Tukang Listrik">Tukang Listrik</option>
+                                            <option value="Tukang Bangunan">Tukang Bangunan</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-select" id="sortBy" onchange="filterKulis()">
+                                            <option value="rating">Rating Tertinggi</option>
+                                            <option value="price-low">Harga Terendah</option>
+                                            <option value="price-high">Harga Tertinggi</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kuli List -->
+                        <div class="row g-4" id="kuliList">
+                            ${this.renderKuliList(kulis)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            static renderKuliList(kulis) {
+                if (kulis.length === 0) {
+                    return '<div class="col-12 text-center"><p class="text-muted">Tidak ada kuli yang ditemukan</p></div>';
+                }
+
+                return kulis.map(kuli => `
+                    <div class="col-md-4">
+                        <div class="card kuli-card shadow">
+                            <img src="${kuli.photo}" class="kuli-avatar" alt="${kuli.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${kuli.name}</h5>
+                                <p class="text-muted mb-2">
+                                    <i class="bi bi-geo-alt"></i> ${kuli.area}
+                                </p>
+                                <div class="mb-2">
+                                    ${kuli.skills.map(skill => `<span class="badge-skill">${skill}</span>`).join('')}
+                                </div>
+                                <div class="rating-stars mb-2">
+                                    ${this.renderStars(kuli.rating)}
+                                    <span class="text-muted ms-1">(${kuli.reviews})</span>
+                                </div>
+                                <p class="fw-bold text-primary mb-3">Rp ${kuli.rate.toLocaleString('id-ID')}/${kuli.rateType}</p>
+                                <button class="btn btn-primary w-100 mb-2" onclick="showKuliDetail(${kuli.id})">
+                                    Lihat Detail
+                                </button>
+                                <button class="btn btn-outline-primary w-100" onclick="openChat(${kuli.id})">
+                                    <i class="bi bi-chat"></i> Chat
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            static getDaftarKuliPage() {
+                return `
+                    <div class="container" style="margin-top: 100px;">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="card shadow-lg border-0">
+                                    <div class="card-body p-5">
+                                        <h3 class="text-center mb-4"><i class="bi bi-person-badge"></i> Daftar Sebagai Mitra Kuli</h3>
+                                        <form onsubmit="handleDaftarKuli(event)">
+                                            <div class="mb-3">
+                                                <label class="form-label">Nama Lengkap</label>
+                                                <input type="text" class="form-control" id="kuliName" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="kuliEmail" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Nomor WhatsApp</label>
+                                                <input type="tel" class="form-control" id="kuliPhone" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Password</label>
+                                                <input type="password" class="form-control" id="kuliPassword" minlength="6" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Keahlian (pisahkan dengan koma)</label>
+                                                <input type="text" class="form-control" id="kuliSkills" placeholder="Tukang Batu, Tukang Cat" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Pengalaman</label>
+                                                <input type="text" class="form-control" id="kuliExperience" placeholder="5 tahun" required>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Tarif (Rp)</label>
+                                                    <input type="number" class="form-control" id="kuliRate" placeholder="150000" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Tipe Tarif</label>
+                                                    <select class="form-select" id="kuliRateType" required>
+                                                        <option value="harian">Harian</option>
+                                                        <option value="borongan">Borongan</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Area Kerja</label>
+                                                <input type="text" class="form-control" id="kuliArea" placeholder="Jakarta Selatan" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Deskripsi Singkat</label>
+                                                <textarea class="form-control" id="kuliDescription" rows="3" placeholder="Ceritakan tentang keahlian Anda..." required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100">Daftar Sekarang</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static getProfilePage() {
+                const user = AuthManager.currentUser;
+                
+                return `
+                    <div class="container" style="margin-top: 100px;">
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow">
+                                    <div class="card-body text-center p-4">
+                                        <img src="https://ui-avatars.com/api/?name=${user.name}&size=150" 
+                                             class="profile-avatar mb-3" alt="${user.name}">
+                                        <h4>${user.name}</h4>
+                                        <p class="text-muted">${user.email}</p>
+                                        <p class="text-muted"><i class="bi bi-phone"></i> ${user.phone}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card shadow">
+                                    <div class="card-body p-4">
+                                        <h5 class="mb-4">Informasi Akun</h5>
+                                        <form onsubmit="handleUpdateProfile(event)">
+                                            <div class="mb-3">
+                                                <label class="form-label">Nama Lengkap</label>
+                                                <input type="text" class="form-control" id="profileName" value="${user.name}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="profileEmail" value="${user.email}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Nomor WhatsApp</label>
+                                                <input type="tel" class="form-control" id="profilePhone" value="${user.phone}" required>
+                                            </div>
+                                            <hr>
+                                            <h6 class="mb-3">Ubah Password</h6>
+                                            <div class="mb-3">
+                                                <label class="form-label">Password Baru (kosongkan jika tidak ingin mengubah)</label>
+                                                <input type="password" class="form-control" id="profileNewPassword" minlength="6">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static getProfileKuliPage() {
+                const user = AuthManager.currentUser;
+                
+                return `
+                    <div class="container" style="margin-top: 100px;">
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow">
+                                    <div class="card-body text-center p-4">
+                                        <div class="position-relative d-inline-block mb-3">
+                                            <img src="${user.photo || 'https://ui-avatars.com/api/?name=' + user.name + '&size=150'}" 
+                                                 class="profile-avatar" alt="${user.name}" id="kuliPhotoPreview">
+                                            <input type="file" id="kuliPhotoInput" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)">
+                                            <button class="btn btn-sm btn-primary position-absolute bottom-0 end-0" 
+                                                    onclick="document.getElementById('kuliPhotoInput').click()">
+                                                <i class="bi bi-camera"></i>
+                                            </button>
+                                        </div>
+                                        <h4>${user.name}</h4>
+                                        <div class="mb-3">
+                                            ${user.skills.map(skill => `<span class="badge-skill">${skill}</span>`).join('')}
+                                        </div>
+                                        <div class="rating-stars mb-2">
+                                            ${this.renderStars(user.rating)}
+                                            <span class="text-muted ms-1">(${user.reviews} ulasan)</span>
+                                        </div>
+                                        <p class="fw-bold text-primary">Rp ${user.rate.toLocaleString('id-ID')}/${user.rateType}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card shadow">
+                                    <div class="card-body p-4">
+                                        <h5 class="mb-4">Informasi Profil Kuli</h5>
+                                        <form onsubmit="handleUpdateKuliProfile(event)">
+                                            <div class="mb-3">
+                                                <label class="form-label">Nama Lengkap</label>
+                                                <input type="text" class="form-control" id="kuliProfileName" value="${user.name}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="kuliProfileEmail" value="${user.email}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Nomor WhatsApp</label>
+                                                <input type="tel" class="form-control" id="kuliProfilePhone" value="${user.phone}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Keahlian (pisahkan dengan koma)</label>
+                                                <input type="text" class="form-control" id="kuliProfileSkills" value="${user.skills.join(', ')}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Pengalaman</label>
+                                                <input type="text" class="form-control" id="kuliProfileExperience" value="${user.experience}" required>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Tarif (Rp)</label>
+                                                    <input type="number" class="form-control" id="kuliProfileRate" value="${user.rate}" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Tipe Tarif</label>
+                                                    <select class="form-select" id="kuliProfileRateType" required>
+                                                        <option value="harian" ${user.rateType === 'harian' ? 'selected' : ''}>Harian</option>
+                                                        <option value="borongan" ${user.rateType === 'borongan' ? 'selected' : ''}>Borongan</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Area Kerja</label>
+                                                <input type="text" class="form-control" id="kuliProfileArea" value="${user.area}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Deskripsi</label>
+                                                <textarea class="form-control" id="kuliProfileDescription" rows="3" required>${user.description}</textarea>
+                                            </div>
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" class="form-check-input" id="kuliAvailability" ${user.availability ? 'checked' : ''}>
+                                                <label class="form-check-label" for="kuliAvailability">Tersedia untuk order</label>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static getDashboardKuliPage() {
+                const user = AuthManager.currentUser;
+                const orders = AppData.getOrders().filter(o => o.kuliId === user.id);
+                const pendingOrders = orders.filter(o => o.status === 'pending');
+                const activeOrders = orders.filter(o => o.status === 'accepted' || o.status === 'in-progress');
+                const completedOrders = orders.filter(o => o.status === 'completed');
+                const totalEarnings = completedOrders.reduce((sum, o) => sum + o.price, 0);
+
+                return `
+                    <div class="container" style="margin-top: 100px;">
+                        <h2 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard Kuli</h2>
+                        
+                        <!-- Stats Cards -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-3">
+                                <div class="stats-card">
+                                    <h6>Order Pending</h6>
+                                    <h2>${pendingOrders.length}</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stats-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                    <h6>Order Aktif</h6>
+                                    <h2>${activeOrders.length}</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stats-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                    <h6>Order Selesai</h6>
+                                    <h2>${completedOrders.length}</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stats-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                    <h6>Total Pendapatan</h6>
+                                    <h2>Rp ${(totalEarnings/1000).toFixed(0)}K</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Orders List -->
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <h5 class="mb-4">Order Terbaru</h5>
+                                ${orders.length === 0 ? '<p class="text-muted text-center">Belum ada order</p>' : `
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tanggal</th>
+                                                    <th>Pelanggan</th>
+                                                    <th>Jenis</th>
+                                                    <th>Harga</th>
+                                                    <th>Status</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                ${orders.slice(0, 10).map(order => `
+                                                    <tr>
+                                                        <td>${new Date(order.date).toLocaleDateString('id-ID')}</td>
+                                                        <td>${order.customerName}</td>
+                                                        <td>${order.type}</td>
+                                                        <td>Rp ${order.price.toLocaleString('id-ID')}</td>
+                                                        <td><span class="badge bg-${this.getStatusColor(order.status)}">${this.getStatusText(order.status)}</span></td>
+                                                        <td>
+                                                            ${order.status === 'pending' ? `
+                                                                <button class="btn btn-sm btn-success" onclick="updateOrderStatus(${order.id}, 'accepted')">Terima</button>
+                                                                <button class="btn btn-sm btn-danger" onclick="updateOrderStatus(${order.id}, 'rejected')">Tolak</button>
+                                                            ` : order.status === 'accepted' ? `
+                                                                <button class="btn btn-sm btn-primary" onclick="updateOrderStatus(${order.id}, 'in-progress')">Mulai</button>
+                                                            ` : order.status === 'in-progress' ? `
+                                                                <button class="btn btn-sm btn-success" onclick="updateOrderStatus(${order.id}, 'completed')">Selesai</button>
+                                                            ` : ''}
+                                                        </td>
+                                                    </tr>
+                                                `).join('')}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static getRiwayatPage() {
+                const user = AuthManager.currentUser;
+                const orders = AppData.getOrders().filter(o => o.customerId === user.id);
+
+                return `
+                    <div class="container" style="margin-top: 100px;">
+                        <h2 class="mb-4"><i class="bi bi-clock-history"></i> Riwayat Pesanan</h2>
+                        
+                        ${orders.length === 0 ? `
+                            <div class="card shadow">
+                                <div class="card-body text-center p-5">
+                                    <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
+                                    <p class="text-muted mt-3">Belum ada riwayat pesanan</p>
+                                    <button class="btn btn-primary mt-3" onclick="UIController.showPage('cari-kuli')">
+                                        Cari Kuli Sekarang
+                                    </button>
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="row g-4">
+                                ${orders.map(order => {
+                                    const kuli = AppData.getKulis().find(k => k.id === order.kuliId);
+                                    return `
+                                        <div class="col-md-12">
+                                            <div class="card shadow">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <img src="${kuli.photo}" class="img-fluid rounded" alt="${kuli.name}">
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <h5>${kuli.name}</h5>
+                                                            <p class="text-muted mb-1">
+                                                                <i class="bi bi-calendar"></i> ${new Date(order.date).toLocaleDateString('id-ID')}
+                                                            </p>
+                                                            <p class="text-muted mb-1">
+                                                                <i class="bi bi-geo-alt"></i> ${order.location}
+                                                            </p>
+                                                            <p class="mb-2">${order.description}</p>
+                                                            <span class="badge bg-${this.getStatusColor(order.status)}">${this.getStatusText(order.status)}</span>
+                                                        </div>
+                                                        <div class="col-md-3 text-end">
+                                                            <h4 class="text-primary">Rp ${order.price.toLocaleString('id-ID')}</h4>
+                                                            <p class="text-muted">${order.type}</p>
+                                                            ${order.status === 'completed' && !order.rated ? `
+                                                                <button class="btn btn-outline-primary btn-sm" onclick="showRatingModal(${order.id}, ${order.kuliId})">
+                                                                    <i class="bi bi-star"></i> Beri Rating
+                                                                </button>
+                                                            ` : order.rated ? `
+                                                                <div class="rating-stars">
+                                                                    ${this.renderStars(order.rating)}
+                                                                </div>
+                                                            ` : ''}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        `}
+                    </div>
+                `;
+            }
+
+            static getNotificationsPage() {
+                const user = AuthManager.currentUser;
+                const notifications = AppData.getNotifications(user.id);
+
+                return `
+                    <div class="container" style="margin-top: 100px;">
+                        <h2 class="mb-4"><i class="bi bi-bell"></i> Notifikasi</h2>
+                        
+                        ${notifications.length === 0 ? `
+                            <div class="card shadow">
+                                <div class="card-body text-center p-5">
+                                    <i class="bi bi-bell-slash" style="font-size: 4rem; color: #ccc;"></i>
+                                    <p class="text-muted mt-3">Tidak ada notifikasi</p>
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="card shadow">
+                                <div class="list-group list-group-flush">
+                                    ${notifications.reverse().map(notif => `
+                                        <div class="list-group-item ${!notif.read ? 'bg-light' : ''}">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <p class="mb-1">${notif.message}</p>
+                                                <small class="text-muted">${this.formatDate(notif.timestamp)}</small>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `}
+                    </div>
+                `;
+            }
+
+            // Helper functions
+            static renderStars(rating) {
+                const fullStars = Math.floor(rating);
+                const halfStar = rating % 1 >= 0.5;
+                let stars = '';
+                
+                for (let i = 0; i < fullStars; i++) {
+                    stars += '<i class="bi bi-star-fill"></i>';
+                }
+                if (halfStar) {
+                    stars += '<i class="bi bi-star-half"></i>';
+                }
+                const emptyStars = 5 - Math.ceil(rating);
+                for (let i = 0; i < emptyStars; i++) {
+                    stars += '<i class="bi bi-star"></i>';
+                }
+                
+                return stars;
+            }
+
+            static getStatusColor(status) {
+                const colors = {
+                    'pending': 'warning',
+                    'accepted': 'info',
+                    'in-progress': 'primary',
+                    'completed': 'success',
+                    'rejected': 'danger',
+                    'cancelled': 'secondary'
+                };
+                return colors[status] || 'secondary';
+            }
+
+            static getStatusText(status) {
+                const texts = {
+                    'pending': 'Menunggu',
+                    'accepted': 'Diterima',
+                    'in-progress': 'Sedang Dikerjakan',
+                    'completed': 'Selesai',
+                    'rejected': 'Ditolak',
+                    'cancelled': 'Dibatalkan'
+                };
+                return texts[status] || status;
+            }
+
+            static formatDate(dateString) {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diff = now - date;
+                const minutes = Math.floor(diff / 60000);
+                const hours = Math.floor(diff / 3600000);
+                const days = Math.floor(diff / 86400000);
+
+                if (minutes < 60) return `${minutes} menit yang lalu`;
+                if (hours < 24) return `${hours} jam yang lalu`;
+                if (days < 7) return `${days} hari yang lalu`;
+                return date.toLocaleDateString('id-ID');
+            }
+        }
+
+        // ==================== EVENT HANDLERS ====================
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const remember = document.getElementById('rememberMe').checked;
+
+            if (AuthManager.login(email, password, remember)) {
+                UIController.updateUI();
+            } else {
+                alert('Email atau password salah!');
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('regPassword').value;
+            const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+            
+            if (password !== passwordConfirm) {
+                alert('Password tidak cocok!');
+                return;
+            }
+
+            const isKuli = document.getElementById('regType').value === 'kuli';
+            const userData = {
+                name: document.getElementById('regName').value,
+                email: document.getElementById('regEmail').value,
+                phone: document.getElementById('regPhone').value,
+                password: password,
+                isKuli: isKuli
+            };
+
+            if (isKuli) {
+                userData.skills = document.getElementById('regSkills').value.split(',').map(s => s.trim());
+                userData.experience = document.getElementById('regExperience').value;
+                userData.rate = parseInt(document.getElementById('regRate').value);
+                userData.rateType = document.getElementById('regRateType').value;
+                userData.area = document.getElementById('regArea').value;
+                userData.photo = 'https://i.pravatar.cc/300?img=' + Math.floor(Math.random() * 70);
+                userData.availability = true;
+                userData.rating = 0;
+                userData.reviews = 0;
+                userData.description = '';
+            }
+
+            if (AuthManager.register(userData)) {
+                alert('Registrasi berhasil! Silakan login.');
+                UIController.showPage('login');
+            } else {
+                alert('Email sudah terdaftar!');
+            }
+        }
+
+        function handleForgotPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value;
+            
+            if (AuthManager.resetPassword(email)) {
+                UIController.showPage('login');
+            } else {
+                alert('Email tidak ditemukan!');
+            }
+        }
+
+        function toggleKuliFields() {
+            const type = document.getElementById('regType').value;
+            const kuliFields = document.getElementById('kuliFields');
+            kuliFields.style.display = type === 'kuli' ? 'block' : 'none';
+        }
+
+        function handleDaftarKuli(e) {
+            e.preventDefault();
+            
+            const kuliData = {
+                name: document.getElementById('kuliName').value,
+                email: document.getElementById('kuliEmail').value,
+                phone: document.getElementById('kuliPhone').value,
+                password: document.getElementById('kuliPassword').value,
+                skills: document.getElementById('kuliSkills').value.split(',').map(s => s.trim()),
+                experience: document.getElementById('kuliExperience').value,
+                rate: parseInt(document.getElementById('kuliRate').value),
+                rateType: document.getElementById('kuliRateType').value,
+                area: document.getElementById('kuliArea').value,
+                description: document.getElementById('kuliDescription').value,
+                photo: 'https://i.pravatar.cc/300?img=' + Math.floor(Math.random() * 70),
+                availability: true,
+                rating: 0,
+                reviews: 0,
+                isKuli: true
+            };
+
+            if (AuthManager.register(kuliData)) {
+                alert('Pendaftaran berhasil! Silakan login dengan akun kuli Anda.');
+                UIController.showPage('login');
+            } else {
+                alert('Email sudah terdaftar!');
+            }
+        }
+
+        function handleUpdateProfile(e) {
+            e.preventDefault();
+            const user = AuthManager.currentUser;
+            
+            user.name = document.getElementById('profileName').value;
+            user.email = document.getElementById('profileEmail').value;
+            user.phone = document.getElementById('profilePhone').value;
+            
+            const newPassword = document.getElementById('profileNewPassword').value;
+            if (newPassword) {
+                user.password = AppData.hashPassword(newPassword);
+            }
+
+            localStorage.setItem('session', JSON.stringify(user));
+            alert('Profil berhasil diperbarui!');
+        }
+
+        function handleUpdateKuliProfile(e) {
+            e.preventDefault();
+            const user = AuthManager.currentUser;
+            
+            const updates = {
+                name: document.getElementById('kuliProfileName').value,
+                email: document.getElementById('kuliProfileEmail').value,
+                phone: document.getElementById('kuliProfilePhone').value,
+                skills: document.getElementById('kuliProfileSkills').value.split(',').map(s => s.trim()),
+                experience: document.getElementById('kuliProfileExperience').value,
+                rate: parseInt(document.getElementById('kuliProfileRate').value),
+                rateType: document.getElementById('kuliProfileRateType').value,
+                area: document.getElementById('kuliProfileArea').value,
+                description: document.getElementById('kuliProfileDescription').value,
+                availability: document.getElementById('kuliAvailability').checked
+            };
+
+            AppData.updateKuli(user.id, updates);
+            Object.assign(user, updates);
+            localStorage.setItem('session', JSON.stringify(user));
+            
+            alert('Profil berhasil diperbarui!');
+            UIController.showPage('profile-kuli');
+        }
+
+        function handlePhotoUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const photoUrl = event.target.result;
+                    document.getElementById('kuliPhotoPreview').src = photoUrl;
+                    
+                    const user = AuthManager.currentUser;
+                    AppData.updateKuli(user.id, { photo: photoUrl });
+                    user.photo = photoUrl;
+                    localStorage.setItem('session', JSON.stringify(user));
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function showKuliDetail(kuliId) {
+            const kuli = AppData.getKulis().find(k => k.id === kuliId);
+            
+            const modal = new bootstrap.Modal(document.createElement('div'));
+            const modalDiv = document.createElement('div');
+            modalDiv.className = 'modal fade';
+            modalDiv.innerHTML = `
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Detail Kuli</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4 text-center">
+                                    <img src="${kuli.photo}" class="img-fluid rounded mb-3" alt="${kuli.name}">
+                                    <div class="rating-stars mb-2">
+                                        ${UIController.renderStars(kuli.rating)}
+                                        <div class="text-muted mt-1">(${kuli.reviews} ulasan)</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <h4>${kuli.name}</h4>
+                                    <p class="text-muted mb-3">
+                                        <i class="bi bi-geo-alt"></i> ${kuli.area}
+                                    </p>
+                                    <div class="mb-3">
+                                        ${kuli.skills.map(skill => `<span class="badge-skill">${skill}</span>`).join('')}
+                                    </div>
+                                    <p><strong>Pengalaman:</strong> ${kuli.experience}</p>
+                                    <p><strong>Tarif:</strong> Rp ${kuli.rate.toLocaleString('id-ID')}/${kuli.rateType}</p>
+                                    <p><strong>Deskripsi:</strong><br>${kuli.description}</p>
+                                    <p><strong>Status:</strong> ${kuli.availability ? '<span class="badge bg-success">Tersedia</span>' : '<span class="badge bg-secondary">Tidak Tersedia</span>'}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-outline-primary" onclick="openChat(${kuli.id})" data-bs-dismiss="modal">
+                                <i class="bi bi-chat"></i> Chat
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="showOrderForm(${kuli.id})" data-bs-dismiss="modal">
+                                Pesan Sekarang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modalDiv);
+            const bsModal = new bootstrap.Modal(modalDiv);
+            bsModal.show();
+            modalDiv.addEventListener('hidden.bs.modal', () => modalDiv.remove());
+        }
+
+        function showOrderForm(kuliId) {
+            const kuli = AppData.getKulis().find(k => k.id === kuliId);
+            
+            const modalDiv = document.createElement('div');
+            modalDiv.className = 'modal fade';
+            modalDiv.innerHTML = `
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Pesan Jasa ${kuli.name}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form onsubmit="handleOrder(event, ${kuliId})">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Jenis Pekerjaan</label>
+                                    <select class="form-select" id="orderType" required>
+                                        <option value="harian">Harian</option>
+                                        <option value="borongan">Borongan</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Tanggal</label>
+                                    <input type="date" class="form-control" id="orderDate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Lokasi</label>
+                                    <input type="text" class="form-control" id="orderLocation" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Deskripsi Pekerjaan</label>
+                                    <textarea class="form-control" id="orderDescription" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Estimasi Harga</label>
+                                    <input type="number" class="form-control" id="orderPrice" value="${kuli.rate}" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Kirim Pesanan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modalDiv);
+            const bsModal = new bootstrap.Modal(modalDiv);
+            bsModal.show();
+            modalDiv.addEventListener('hidden.bs.modal', () => modalDiv.remove());
+        }
+
+        function handleOrder(e, kuliId) {
+            e.preventDefault();
+            
+            const order = {
+                id: Date.now(),
+                kuliId: kuliId,
+                customerId: AuthManager.currentUser.id,
+                customerName: AuthManager.currentUser.name,
+                type: document.getElementById('orderType').value,
+                date: document.getElementById('orderDate').value,
+                location: document.getElementById('orderLocation').value,
+                description: document.getElementById('orderDescription').value,
+                price: parseInt(document.getElementById('orderPrice').value),
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+
+            AppData.saveOrder(order);
+            bootstrap.Modal.getInstance(e.target.closest('.modal')).hide();
+            alert('Pesanan berhasil dikirim! Menunggu konfirmasi dari kuli.');
+            UIController.showPage('riwayat');
+        }
+
+        function filterKulis() {
+            const name = document.getElementById('searchName').value.toLowerCase();
+            const area = document.getElementById('searchArea').value;
+            const skill = document.getElementById('searchSkill').value;
+            const sortBy = document.getElementById('sortBy').value;
+
+            let kulis = AppData.getKulis();
+
+            // Filter
+            kulis = kulis.filter(k => {
+                const matchName = k.name.toLowerCase().includes(name);
+                const matchArea = !area || k.area === area;
+                const matchSkill = !skill || k.skills.includes(skill);
+                return matchName && matchArea && matchSkill;
+            });
+
+            // Sort
+            if (sortBy === 'rating') {
+                kulis.sort((a, b) => b.rating - a.rating);
+            } else if (sortBy === 'price-low') {
+                kulis.sort((a, b) => a.rate - b.rate);
+            } else if (sortBy === 'price-high') {
+                kulis.sort((a, b) => b.rate - a.rate);
+            }
+
+            document.getElementById('kuliList').innerHTML = UIController.renderKuliList(kulis);
+        }
+
+        function openChat(kuliId) {
+            const kuli = AppData.getKulis().find(k => k.id === kuliId);
+            document.getElementById('chatKuliName').textContent = kuli.name;
+            
+            // Load chat history
+            const chats = AppData.getChats().filter(c => 
+                (c.senderId === AuthManager.currentUser.id && c.receiverId === kuliId) ||
+                (c.senderId === kuliId && c.receiverId === AuthManager.currentUser.id)
+            );
+
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.innerHTML = chats.map(chat => `
+                <div class="chat-message ${chat.senderId === AuthManager.currentUser.id ? 'sent' : 'received'}">
+                    ${chat.message}
+                    <div class="text-muted" style="font-size: 0.75rem; margin-top: 5px;">
+                        ${UIController.formatDate(chat.timestamp)}
+                    </div>
+                </div>
+            `).join('');
+
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Store current chat
+            window.currentChatKuliId = kuliId;
+            
+            const modal = new bootstrap.Modal(document.getElementById('chatModal'));
+            modal.show();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            const chat = {
+                id: Date.now(),
+                senderId: AuthManager.currentUser.id,
+                receiverId: window.currentChatKuliId,
+                message: message,
+                timestamp: new Date().toISOString()
+            };
+
+            AppData.saveChat(chat);
+            
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.innerHTML += `
+                <div class="chat-message sent">
+                    ${message}
+                    <div class="text-muted" style="font-size: 0.75rem; margin-top: 5px;">
+                        Baru saja
+                    </div>
+                </div>
+            `;
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            input.value = '';
+            
+            // Simulate response (demo purposes)
+            setTimeout(() => {
+                const response = {
+                    id: Date.now(),
+                    senderId: window.currentChatKuliId,
+                    receiverId: AuthManager.currentUser.id,
+                    message: 'Terima kasih atas pesannya. Saya akan segera merespons.',
+                    timestamp: new Date().toISOString()
+                };
+                AppData.saveChat(response);
+                chatContainer.innerHTML += `
+                    <div class="chat-message received">
+                        ${response.message}
+                        <div class="text-muted" style="font-size: 0.75rem; margin-top: 5px;">
+                            Baru saja
+                        </div>
+                    </div>
+                `;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1000);
+        }
+
+        function updateOrderStatus(orderId, status) {
+            AppData.updateOrder(orderId, { status: status });
+            
+            const order = AppData.getOrders().find(o => o.id === orderId);
+            AppData.addNotification(order.customerId, `Pesanan Anda telah ${UIController.getStatusText(status)}`);
+            
+            alert('Status order berhasil diperbarui!');
+            UIController.showPage('dashboard-kuli');
+        }
+
+        function showRatingModal(orderId, kuliId) {
+            const modalDiv = document.createElement('div');
+            modalDiv.className = 'modal fade';
+            modalDiv.innerHTML = `
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Beri Rating & Ulasan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form onsubmit="handleRating(event, ${orderId}, ${kuliId})">
+                            <div class="modal-body">
+                                <div class="mb-3 text-center">
+                                    <label class="form-label">Rating</label>
+                                    <div class="rating-input">
+                                        ${[5,4,3,2,1].map(i => `
+                                            <input type="radio" name="rating" id="star${i}" value="${i}" required>
+                                            <label for="star${i}" class="text-warning" style="font-size: 2rem; cursor: pointer;">
+                                                <i class="bi bi-star-fill"></i>
+                                            </label>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Ulasan</label>
+                                    <textarea class="form-control" id="reviewText" rows="3" required></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Kirim Rating</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modalDiv);
+            const bsModal = new bootstrap.Modal(modalDiv);
+            bsModal.show();
+            modalDiv.addEventListener('hidden.bs.modal', () => modalDiv.remove());
+        }
+
+        function handleRating(e, orderId, kuliId) {
+            e.preventDefault();
+            
+            const rating = parseInt(document.querySelector('input[name="rating"]:checked').value);
+            const review = document.getElementById('reviewText').value;
+
+            // Update order
+            AppData.updateOrder(orderId, { 
+                rated: true, 
+                rating: rating,
+                review: review
+            });
+
+            // Update kuli rating
+            const kuli = AppData.getKulis().find(k => k.id === kuliId);
+            const newReviewCount = kuli.reviews + 1;
+            const newRating = ((kuli.rating * kuli.reviews) + rating) / newReviewCount;
+            
+            AppData.updateKuli(kuliId, {
+                rating: newRating,
+                reviews: newReviewCount
+            });
+
+            AppData.addNotification(kuliId, `Anda mendapat rating ${rating} bintang dari pelanggan`);
+
+            bootstrap.Modal.getInstance(e.target.closest('.modal')).hide();
+            alert('Terima kasih atas rating dan ulasan Anda!');
+            UIController.showPage('riwayat');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('darkModeIcon');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'bi bi-sun';
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                icon.className = 'bi bi-moon-stars';
+                localStorage.setItem('darkMode', 'false');
+            }
+        }
+
+        // Keyboard shortcut for chat
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && e.target.id === 'chatInput') {
+                sendMessage();
+            }
+        });
+
+        // ==================== INITIALIZATION ====================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            UIController.init();
+            
+            // Load dark mode preference
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkModeIcon').className = 'bi bi-sun';
+            }
+
+            // Update notification badge periodically
+            setInterval(() => {
+                UIController.updateNotificationBadge();
+            }, 5000);
+        });
+
+        // Make functions global
+        window.showPage = (page) => UIController.showPage(page);
+        window.UIController = UIController;
+    </script>
+</body>
+</html>
